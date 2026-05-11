@@ -18,4 +18,6 @@ public interface ClubMapper {
     // transforma CreateClubRequest em um Club
     @Mapping(target = "stadium.id", source = "stadiumId")
     Club toEntity(CreateClubRequest request);
+
+    ClubDetailResponse toDetailResponse(Club club);
 }

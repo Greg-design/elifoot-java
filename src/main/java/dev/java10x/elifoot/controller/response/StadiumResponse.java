@@ -16,5 +16,5 @@ public class StadiumResponse {  // Response DTO (StadiumResponse.java) Controla 
     private Integer capacity;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String urlImage;
+    private String urlImg;
 }

@@ -3,26 +3,33 @@ package dev.java10x.elifoot.controller;
 import dev.java10x.elifoot.controller.request.CreateClubRequest;
 import dev.java10x.elifoot.controller.response.ClubDetailResponse;
 import dev.java10x.elifoot.controller.response.ClubResponse;
+import dev.java10x.elifoot.controller.response.PlayerResponse;
 import dev.java10x.elifoot.entity.Club;
 import dev.java10x.elifoot.mapper.ClubMapper;
 import dev.java10x.elifoot.service.CreateClubService;
 import dev.java10x.elifoot.service.FindClubService;
+import dev.java10x.elifoot.service.FindPlayerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RequestMapping("/clubs")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/clubs")
 public class ClubController {
 
     private final FindClubService findClubService;
     private final CreateClubService createClubService;
+    private final FindPlayerService findPlayerService;
     private final ClubMapper clubMapper;
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_club:read', 'SCOPE_admin:all')")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<ClubResponse> findAll(Pageable pageable){
@@ -30,6 +37,7 @@ public class ClubController {
     }
 
     // esse retorna um club com o stadium
+    @PreAuthorize("hasAnyAuthority('SCOPE_club:read', 'SCOPE_admin:all')")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ClubDetailResponse findById(@PathVariable Long id){
@@ -37,10 +45,18 @@ public class ClubController {
         return clubMapper.toClubDetailResponse(club);
     }
 
+    @PreAuthorize("hasAnyAuthority('SCOPE_club:write', 'SCOPE_admin:all')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ClubDetailResponse create(@Valid @RequestBody CreateClubRequest request){
         return createClubService.execute(request);
+    }
+
+    //endpoint de players - retorna todos os jogadores de um clube
+    @PreAuthorize("hasAnyAuthority('SCOPE_club:read', 'SCOPE_admin:all')")
+    @GetMapping("/{id}/players")
+    public List<PlayerResponse> findPlayersByClubId(@PathVariable Long id){
+        return findPlayerService.findByClubId(id);
     }
 
 }

@@ -1,24 +1,25 @@
 package dev.java10x.elifoot.controller.request;
 
-import dev.java10x.elifoot.enums.Position;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
-public class CreatePlayerRequest {
-
+public class CreateUserRequest {
     @NotBlank
     private String name;
+    @NotBlank
+    private String email;
+    @NotBlank
+    private String password;
     @NotNull
-    private Position position;
-    @NotNull
-    private int shirtNumber;
-    private String urlImg;
-    @NotNull
-    private Long clubId;
+    @NotEmpty
+    private List<Long> scopes;
 }

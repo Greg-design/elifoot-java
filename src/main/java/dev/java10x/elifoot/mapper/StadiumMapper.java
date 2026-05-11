@@ -13,4 +13,6 @@ public interface StadiumMapper {  // utilizando a lib mapstruct para lidar melho
 
     // para criar um Stadium
     Stadium toStadium(CreateStadiumRequest createStadiumRequest);
+
+    Object toEntity(CreateStadiumRequest request);
 }

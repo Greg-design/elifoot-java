@@ -30,4 +30,11 @@ public class Club {
 
     @OneToMany(mappedBy = "club")
     private List<Player> players;
+
+    public boolean isActive() {
+        return false;
+    }
+
+    public Object getCreatedAt() {
+    }
 }

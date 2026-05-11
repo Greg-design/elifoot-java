@@ -26,4 +26,8 @@ public interface PlayerMapper {
     default String mapPositionToString(Position position){
         return position != null ? position.getLabel() : null;
     }
+
+    PlayerResponse toResponse(Player player);
+
+    PlayerDetailResponse toDetailResponse(Player player);
 }
